@@ -300,17 +300,13 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
                 $iterationArgs = $test->getData();
                 $iterationTestName = trim(vsprintf($formatStr, $iterationArgs));
                 $this->currentTestMethodPrettified .= ": {$iterationTestName}";
+            } else {
+                $this->currentTestMethodPrettified .= ":" . $test->getDataSetAsString(FALSE);
             }
 
             $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
 
-
             // ensure name uniqueness
-            if (isset($this->tests[$this->currentTestMethodPrettified]))
-            {
-                // try to append data set info
-                $this->currentTestMethodPrettified .= $test->getDataSetAsString(FALSE);
-            }
             if (isset($this->tests[$this->currentTestMethodPrettified])) throw new Exception("Test name already exists: {$this->currentTestMethodPrettified}");
 
             // initialize data set for this test+iteration
