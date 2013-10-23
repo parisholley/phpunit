@@ -335,6 +335,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
                 $this->tests[$this->currentTestMethodPrettified]['errors'][] = $this->testError;
             }
 
+            $this->onTest($this->currentTestMethodPrettified, $this->tests[$this->currentTestMethodPrettified]['failure'] == 0);
+
             $this->currentTestClassPrettified  = NULL;
             $this->currentTestMethodPrettified = NULL;
         }
@@ -345,10 +347,6 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      */
     protected function doEndClass()
     {
-        foreach ($this->tests as $name => $data) {
-            $this->onTest($name, $data['failure'] == 0);
-        }
-
         $this->endClass($this->testClass);
     }
 
