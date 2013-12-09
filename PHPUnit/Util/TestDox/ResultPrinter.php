@@ -282,6 +282,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
                 $this->currentTestMethodPrettified = $this->prettifier->prettifyTestMethod($test->getName(false));
             }
 
+            $testSubtitle = NULL;
             if (isset($annotations['method']['dataProviderTestdox'][0])) {
                 $tdArgumentSpec = $annotations['method']['dataProviderTestdox'][0];
 
@@ -298,10 +299,20 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
 
                 // generate pretty test name
                 $iterationArgs = $test->getData();
-                $iterationTestName = trim(vsprintf($formatStr, $iterationArgs));
-                $this->currentTestMethodPrettified .= ": {$iterationTestName}";
+                $iterationArgs = array_map(function($arg) {
+                    if (is_bool($arg))
+                    {
+                        return $arg ? 'true' : 'false';
+                    }
+                    return $arg;
+                }, $iterationArgs);
+                $testSubtitle = trim(vsprintf($formatStr, $iterationArgs));
             } else {
-                $this->currentTestMethodPrettified .= ":" . $test->getDataSetAsString(FALSE);
+                $testSubtitle = $test->getDataSetAsString(FALSE);
+            }
+            if ($testSubtitle)
+            {
+                $this->currentTestMethodPrettified .= ": {$testSubtitle}";
             }
 
             $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
