@@ -308,7 +308,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
                 }, $iterationArgs);
                 $testSubtitle = trim(vsprintf($formatStr, $iterationArgs));
             } else {
-                $testSubtitle = $test->getDataSetAsString(FALSE);
+                $testSubtitle = $test->getDataSetName();
             }
             if ($testSubtitle)
             {

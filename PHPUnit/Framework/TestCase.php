@@ -1730,10 +1730,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $buffer = '';
 
         if (!empty($this->data)) {
-            if (is_int($this->dataName)) {
-                $buffer .= sprintf(' with data set #%d', $this->dataName);
-            } else {
+            if ($this->isNamedDataSet()) {
                 $buffer .= sprintf(' with data set "%s"', $this->dataName);
+            } else {
+                $buffer .= sprintf(' with data set #%d', $this->dataName);
             }
 
             if ($includeData) {
@@ -1742,6 +1742,23 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         return $buffer;
+    }
+
+    public function isNamedDataSet()
+    {
+        return !is_int($this->dataName);
+    }
+
+    public function getDataSetName()
+    {
+        if ($this->isNamedDataSet())
+        {
+            return $this->dataName;
+        }
+        else
+        {
+            return sprintf(" data set #%d", $this->dataName);
+        }
     }
 
     /**
